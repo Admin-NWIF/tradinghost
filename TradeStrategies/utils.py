@@ -8,7 +8,7 @@ class Utils(object):
     # seriesClose -> list of close values
     # seriesIdx -> current idx for pivot
     # leftStrength -> bars to check left
-    # rightStrength -> bars to check right
+    # rightStrength -> bars to check right 
     def pivotHigh(self, series, seriesClose, seriesIdx, leftStrength, rightStrength):
         if seriesIdx - leftStrength < 0:
             return None
