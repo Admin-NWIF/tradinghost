@@ -49,8 +49,10 @@ class TestWrapper(EWrapper):
 
         if longEntry[0]:
             print("Long")
+            time.sleep(10)
         elif shortEntry[0]:
             print("Short")
+            time.sleep(10)
 
         print("End")
 
@@ -99,13 +101,15 @@ if __name__ == '__main__':
     minute = 30
     while hour != 16:
         queryTime = datetime.datetime(2021, 4, 13, hour, minute, 00).strftime("%Y%m%d %H:%M:%S")
-        app.reqHistoricalData(4102, ibkrContract, queryTime ,"2400 S", "1 min", "MIDPOINT", 1, 1, False, [])
+        app.reqHistoricalData(4102, ibkrContract, queryTime ,"1 D", "1 min", "MIDPOINT", 1, 1, False, [])
         if minute == 59:
             hour += 1
             minute = 0
         else:
             minute += 1
-        print(datetime.datetime(2021, 4, 13, hour, minute, 00))
+        if hour == 4 and minute == 1:
+            print("done")
+            break
         time.sleep(1)
 
     print("Successfully launched IB API application...")

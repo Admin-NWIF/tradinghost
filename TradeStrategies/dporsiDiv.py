@@ -101,10 +101,10 @@ class DPORSIDiv(object):
                 variablePriceIdx -= 1
 
             if tradeSignal[0]:
-                rsiDateIdx = rsiData["Date"].index(tradeSignal[1])
-                rsiValue = float(rsiData["RSI"][rsiDateIndex])
+                rsiDateIdx = self.rsiData["Date"].index(tradeSignal[1])
+                rsiValue = float(self.rsiData["RSI"][rsiDateIdx])
                 print("long rsiValue ", rsiValue)
-                if tradeSignal[0] and rsi <= 30:
+                if tradeSignal[0] and rsiValue <= 30:
                     print("###################")
                     print("Long trade executed")
                     print("###################")
@@ -151,8 +151,8 @@ class DPORSIDiv(object):
                 variablePriceIdx -= 1
 
             if tradeSignal[0]:
-                rsiDateIdx = rsiData["Date"].index(tradeSignal[1])
-                rsiValue = float(rsiData["RSI"][rsiDateIdx])
+                rsiDateIdx = self.rsiData["Date"].index(tradeSignal[1])
+                rsiValue = float(self.rsiData["RSI"][rsiDateIdx])
                 print("short rsiValue ", rsiValue)
                 if tradeSignal[0] and rsiValue >= 70:
                     print("###################")
