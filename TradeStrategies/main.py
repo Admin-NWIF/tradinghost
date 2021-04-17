@@ -6,11 +6,11 @@ import math
 import pandas as pd
 import numpy as np
 import pandas_ta as ta
-from dporsi-div import DPORSIDiv
 from ibapi.client import EClient
 from ibapi.wrapper import EWrapper
 from ibapi.contract import Contract
 from utils import Utils
+from dporsiDiv import DPORSIDiv
 
 dict = {
             "Open": [],

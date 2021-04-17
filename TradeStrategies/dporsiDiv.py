@@ -52,7 +52,7 @@ class DPORSIDiv(object):
         for idx, val in enumerate(rsi):
             self.rsiData["RSI"].append(val)
             self.rsiData["Date"].append(self.priceData.Date[idx])
-        self.rsiDataFrame = pd.DataFrame(rsiData, columns = ["RSI", "Date"])
+        self.rsiDataFrame = pd.DataFrame(self.rsiData, columns = ["RSI", "Date"])
     
     def populateHighsAndLows(self):
         util = Utils()
