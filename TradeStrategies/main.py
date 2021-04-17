@@ -47,6 +47,11 @@ class TestWrapper(EWrapper):
         longEntry = dpoRsiDivStrategy.detectLongEntrySignal()
         shortEntry = dpoRsiDivStrategy.detectShortEntrySignal()
 
+        if longEntry[0]:
+            print("Long")
+        elif shortEntry[0]:
+            print("Short")
+
         print("End")
 
     def historicalDataUpdate(self, reqId, bar):

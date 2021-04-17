@@ -81,7 +81,7 @@ class Utils(object):
         TAPivotLowTwo = bullishDivPivots["TAPivotLows"][latestPriceIdx]
         
         if pricePivotHighOne is None:
-            return False
+            return [False, None]
         
         if TAPivotLowOne is None:
             if variablePriceIdx-1 >= 0 and bullishDivPivots["TAPivotLows"][variablePriceIdx-1] is not None:
@@ -90,11 +90,11 @@ class Utils(object):
                 TAPivotLowOne = bullishDivPivots["TAPivotLows"][variablePriceIdx+1]
         
         if TAPivotLowOne is None:
-            return False
+            return [False, None]
 
         if pricePivotHighTwo[0] < pricePivotHighOne[0] and TAPivotLowTwo[0] > TAPivotLowOne[0]:
             return [True, pricePivotHighTwo[1]]
-        return False
+        return [False, None]
     
     def higherLowsAndLowerHighs(self, bearishDivPivots, variablePriceIdx, latestPriceIdx):
         pricePivotLowOne = bearishDivPivots["pricePivotLows"][variablePriceIdx]
@@ -103,7 +103,7 @@ class Utils(object):
         TAPivotHighTwo = bearishDivPivots["TAPivotHighs"][latestPriceIdx]
 
         if pricePivotLowOne is None:
-            return False
+            return [False, None]
         
         if TAPivotHighOne is None:
             if variablePriceIdx-1 >= 0 and bearishDivPivots["TAPivotHighs"][variablePriceIdx-1] is not None:
@@ -112,11 +112,11 @@ class Utils(object):
                 TAPivotHighOne = bearishDivPivots["TAPivotHighs"][variablePriceIdx+1]
 
         if TAPivotHighOne is None:
-            return False
+            return [False, None]
 
         if pricePivotLowTwo[0] > pricePivotLowOne[0] and TAPivotHighTwo[0] < TAPivotHighOne[0]:
             return [True, pricePivotLowTwo[1]]
-        return False
+        return [False, None]
     
     def days_between(d1, d2):
         d1 = datetime.strptime(d1, "%Y-%m-%d")
