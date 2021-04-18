@@ -88,7 +88,7 @@ class DPORSIDiv(object):
             variablePriceIdx = len(self.bullishDivPivots["pricePivotHighs"])-1
 
             while variablePriceIdx > latestPriceIdx:
-                print("here, ", variablePriceIdx, " ", latestPriceIdx)
+                # print("here, ", variablePriceIdx, " ", latestPriceIdx)
                 isBullishDiv = self.util.lowerHighsAndHigherLows(self.bullishDivPivots, variablePriceIdx, latestPriceIdx)
                 if not isBullishDiv:
                     print("not a bullish div")
@@ -138,7 +138,6 @@ class DPORSIDiv(object):
             variablePriceIdx = len(self.bearishDivPivots["pricePivotLows"])-1
 
             while variablePriceIdx > latestPriceIdx:
-                print("here, ", variablePriceIdx, " ", latestPriceIdx)
                 isBearishDiv = self.util.higherLowsAndLowerHighs(self.bearishDivPivots, variablePriceIdx, latestPriceIdx)
                 if not isBearishDiv:
                     print("not a bearish div")
