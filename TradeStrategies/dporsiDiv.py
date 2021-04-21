@@ -2,8 +2,9 @@ import pandas as pd
 import numpy as np
 import pandas_ta as ta
 from utils import Utils
+from dpoTemp import dpoTemp
 
-class DPORSIDiv(object):
+class DPORSIDiv():
     def __init__(self, priceData):
         self.priceData = priceData
         self.dpoData = {
@@ -37,16 +38,17 @@ class DPORSIDiv(object):
         self.rsiDataFrame = None
         self.minutesBack = 3
 
-        self.pricePivotHighAndTAPivotLow = None
-        self.pricePivotLowAndTAPivotHigh = None
+        self.pricePivotHighAndTAPivotLow = [False, None]
+        self.pricePivotLowAndTAPivotHigh = [False, None]
         self.util = Utils()
 
     def populateDPO(self):
-        dpo = ta.dpo(self.priceData.Close, length=20, centered=False, offset=None)
+        dpo = ta.dpo(close=self.priceData.Close, length=20, centered=False, offset=None)
         for idx, val in enumerate(dpo):
             self.dpoData["Value"].append(val)
             self.dpoData["Date"].append(self.priceData.Date[idx])
         self.dpoDataFrame = pd.DataFrame(self.dpoData, columns = ["Value", "Date"])
+        return dpo
 
     def populateRSI(self):
         rsi = ta.rsi(self.priceData.Close, 14)
@@ -54,6 +56,7 @@ class DPORSIDiv(object):
             self.rsiData["RSI"].append(val)
             self.rsiData["Date"].append(self.priceData.Date[idx])
         self.rsiDataFrame = pd.DataFrame(self.rsiData, columns = ["RSI", "Date"])
+        return
     
     def populateHighsAndLows(self):
         for idx in range(len(self.priceData.Close)):
@@ -67,6 +70,8 @@ class DPORSIDiv(object):
     
     def detectLongEntrySignal(self):
         tradeSignal = [False, None]
+
+        # if the current bar is a pivot high price and pivot low TA, get the last 30 price pivot highs (including None) and TA pivot lows
         if self.pricePivotHighAndTAPivotLow[0]:
             pivotHigh = self.pricePivotHighAndTAPivotLow[1]
             TAPivotLow = self.pricePivotHighAndTAPivotLow[2]
@@ -90,13 +95,13 @@ class DPORSIDiv(object):
             while variablePriceIdx > latestPriceIdx:
                 # print("here, ", variablePriceIdx, " ", latestPriceIdx)
                 isBullishDiv = self.util.lowerHighsAndHigherLows(self.bullishDivPivots, variablePriceIdx, latestPriceIdx)
-                if not isBullishDiv:
+                if not isBullishDiv[0]:
                     print("not a bullish div")
                     variablePriceIdx -= 1
                     continue
                 elif isBullishDiv[0]:
                     print("is a bullish div!")
-                    tradeSignal = [isBullishDiv[0], isBullishDiv[1]]
+                    tradeSignal = [True, isBullishDiv[1]]
 
                 variablePriceIdx -= 1
 
@@ -145,7 +150,7 @@ class DPORSIDiv(object):
                     continue
                 elif isBearishDiv[0]:
                     print("is a bearish div!")
-                    tradeSignal = [isBearishDiv[0], isBearishDiv[1]]
+                    tradeSignal = [True, isBearishDiv[1]]
                 
                 variablePriceIdx -= 1
 

@@ -11,6 +11,8 @@ from ibapi.wrapper import EWrapper
 from ibapi.contract import Contract
 from utils import Utils
 from dporsiDiv import DPORSIDiv
+from backtesting import Backtest, Strategy
+from backTest import DivStrategy
 
 dict = {
             "Open": [],
@@ -36,28 +38,29 @@ class TestWrapper(EWrapper):
 
         # Populate data frame
         dataFrame = pd.DataFrame(dict, columns = ["Open", "High", "Low", "Close", "Volume", "Date"])
+        pd.DatetimeIndex(data=dataFrame.Date)
 
-        # Insert custom strategy class and populate indicators
-        dpoRsiDivStrategy = DPORSIDiv(dataFrame)
-        dpoRsiDivStrategy.populateDPO()
-        dpoRsiDivStrategy.populateRSI()
-        dpoRsiDivStrategy.populateHighsAndLows()
+        # # Insert custom strategy class and populate indicators
+        # dpoRsiDivStrategy = DPORSIDiv(dataFrame)
+        # dpoRsiDivStrategy.populateDPO()
+        # dpoRsiDivStrategy.populateRSI()
+        # dpoRsiDivStrategy.populateHighsAndLows()
 
-        # Generate long or short entry signal
-        longEntry = dpoRsiDivStrategy.detectLongEntrySignal()
-        shortEntry = dpoRsiDivStrategy.detectShortEntrySignal()
+        # # Generate long or short entry signal
+        # longEntry = dpoRsiDivStrategy.detectLongEntrySignal()
+        # shortEntry = dpoRsiDivStrategy.detectShortEntrySignal()
 
-        if longEntry[0]:
-            print("Long")
-            time.sleep(10)
-        elif shortEntry[0]:
-            print("Short")
-            time.sleep(10)
+        bt = Backtest(data=dataFrame, strategy=DivStrategy, commission=.002, exclusive_orders=True)
+        stats = bt.run()
+        bt.plot()
+        print(stats)
+
+        # print(stats)
 
         print("End")
 
     def historicalDataUpdate(self, reqId, bar):
-        print("HistoricalDataUpdate. ReqId:", reqId, "BarData.", bar)
+        print("HistoricalDataUpdate. ReqId:", reqId, "BarData.", bar)   
 
 class TestClient(EClient):
     def __init__(self, wrapper):
@@ -99,17 +102,20 @@ if __name__ == '__main__':
     ibkrContract = app.createContract("MSFT", "STK", "USD", "SMART")
     hour = 9
     minute = 30
-    while hour != 16:
-        queryTime = datetime.datetime(2021, 4, 13, hour, minute, 00).strftime("%Y%m%d %H:%M:%S")
-        app.reqHistoricalData(4102, ibkrContract, queryTime ,"1 D", "1 min", "MIDPOINT", 1, 1, False, [])
-        if minute == 59:
-            hour += 1
-            minute = 0
-        else:
-            minute += 1
-        if hour == 4 and minute == 1:
-            print("done")
-            break
-        time.sleep(1)
+    # while hour != 16:
+    #     queryTime = datetime.datetime(2021, 4, 13, hour, minute, 00).strftime("%Y%m%d %H:%M:%S")
+    #     app.reqHistoricalData(4102, ibkrContract, queryTime ,"1 D", "1 min", "MIDPOINT", 1, 1, False, [])
+    #     if minute == 59:
+    #         hour += 1
+    #         minute = 0
+    #     else:
+    #         minute += 1
+    #     if hour == 4 and minute == 1:
+    #         print("done")
+    #         break
+    #     time.sleep(1)
+
+    queryTime = datetime.datetime(2021, 4, 13, hour, minute, 00).strftime("%Y%m%d %H:%M:%S")
+    app.reqHistoricalData(4102, ibkrContract, queryTime ,"5 D", "5 min", "MIDPOINT", 1, 1, False, [])
 
     print("Successfully launched IB API application...")

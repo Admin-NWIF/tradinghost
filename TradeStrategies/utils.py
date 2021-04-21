@@ -80,18 +80,22 @@ class Utils(object):
         TAPivotLowOne = bullishDivPivots["TAPivotLows"][variablePriceIdx]
         TAPivotLowTwo = bullishDivPivots["TAPivotLows"][latestPriceIdx]
         
+        # if there isn't a pivot at this interval, return
         if pricePivotHighOne is None:
             return [False, None]
         
+        # if there is a price pivot high, but not a TA pivot low, check back one bar and forward one bar for a TA pivot low
         if TAPivotLowOne is None:
             if variablePriceIdx-1 >= 0 and bullishDivPivots["TAPivotLows"][variablePriceIdx-1] is not None:
                 TAPivotLowOne = bullishDivPivots["TAPivotLows"][variablePriceIdx-1]
             elif variablePriceIdx+1 < len(bullishDivPivots["TAPivotLows"]) and bullishDivPivots["TAPivotLows"][variablePriceIdx+1] is not None:
                 TAPivotLowOne = bullishDivPivots["TAPivotLows"][variablePriceIdx+1]
         
+        # if there wasn't a TA pivot at +1 bar or -1 bar or current bar, then return False
         if TAPivotLowOne is None:
             return [False, None]
 
+        # if pivots occurred within set parameters, check for lower price highs
         if pricePivotHighTwo[0] < pricePivotHighOne[0] and TAPivotLowTwo[0] > TAPivotLowOne[0]:
             return [True, pricePivotHighTwo[1]]
         return [False, None]
