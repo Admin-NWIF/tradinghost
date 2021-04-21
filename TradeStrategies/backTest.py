@@ -44,9 +44,11 @@ class DivStrategy(Strategy):
             longEntry = dpoRsiDivStrategy.detectLongEntrySignal()
             shortEntry = dpoRsiDivStrategy.detectShortEntrySignal()
 
-            if longEntry:
+            if longEntry[0]:
+                print(longEntry[0], longEntry[1])
                 self.buy()
-            elif shortEntry:
+            elif shortEntry[0]:
+                print(shortEntry[0], shortEntry[1])
                 self.sell()
             
             print("currentRow: ", len(self.data.df.Close))

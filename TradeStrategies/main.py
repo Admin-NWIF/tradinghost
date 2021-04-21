@@ -50,7 +50,7 @@ class TestWrapper(EWrapper):
         # longEntry = dpoRsiDivStrategy.detectLongEntrySignal()
         # shortEntry = dpoRsiDivStrategy.detectShortEntrySignal()
 
-        bt = Backtest(data=dataFrame, strategy=DivStrategy, commission=.002, exclusive_orders=True)
+        bt = Backtest(data=dataFrame, strategy=DivStrategy, cash=float(100000), commission=.002, margin=float(1), exclusive_orders=False)
         stats = bt.run()
         bt.plot()
         print(stats)
@@ -116,6 +116,6 @@ if __name__ == '__main__':
     #     time.sleep(1)
 
     queryTime = datetime.datetime(2021, 4, 13, hour, minute, 00).strftime("%Y%m%d %H:%M:%S")
-    app.reqHistoricalData(4102, ibkrContract, queryTime ,"5 D", "5 min", "MIDPOINT", 1, 1, False, [])
+    app.reqHistoricalData(4102, ibkrContract, queryTime ,"10 D", "5 mins", "MIDPOINT", 1, 1, False, [])
 
     print("Successfully launched IB API application...")

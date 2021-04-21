@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import pandas_ta as ta
 from utils import Utils
-from dpoTemp import dpoTemp
 
 class DPORSIDiv():
     def __init__(self, priceData):
@@ -96,7 +95,7 @@ class DPORSIDiv():
                 # print("here, ", variablePriceIdx, " ", latestPriceIdx)
                 isBullishDiv = self.util.lowerHighsAndHigherLows(self.bullishDivPivots, variablePriceIdx, latestPriceIdx)
                 if not isBullishDiv[0]:
-                    print("not a bullish div")
+                    # print("not a bullish div")
                     variablePriceIdx -= 1
                     continue
                 elif isBullishDiv[0]:
@@ -145,7 +144,7 @@ class DPORSIDiv():
             while variablePriceIdx > latestPriceIdx:
                 isBearishDiv = self.util.higherLowsAndLowerHighs(self.bearishDivPivots, variablePriceIdx, latestPriceIdx)
                 if not isBearishDiv:
-                    print("not a bearish div")
+                    # print("not a bearish div")
                     variablePriceIdx -= 1
                     continue
                 elif isBearishDiv[0]:
