@@ -119,3 +119,5 @@ if __name__ == '__main__':
     app.reqHistoricalData(4102, ibkrContract, queryTime ,"10 D", "5 mins", "MIDPOINT", 1, 1, False, [])
 
     print("Successfully launched IB API application...")
+
+    print("Umar is a really cool kid!")
